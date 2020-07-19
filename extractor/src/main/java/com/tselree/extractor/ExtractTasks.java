@@ -3,6 +3,7 @@ import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
+import org.springframework.data.relational.core.sql.IsNull;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Component;
 
@@ -24,26 +25,33 @@ public class ExtractTasks {
 	private EntityHTSDAO entityHTSDAO;
 	@Scheduled(fixedRate = 5000)
 	public void execute() throws Exception {
-		String sec = omniformDAO.getMinID();
-		String payload = omniformDAO.getPayload(sec);
-		String type = new XCheckType().exec(payload).getType();
-		String key_val = new XCheckType().exec(payload).getBusinessID();
-		XpathConfig xgroup = checkGroupDAO.checkGroup(type);
-		List<XpathList> xpathList = xpathListDAO.xpathList(xgroup.getXgroup());
-		if(xgroup.getTb_structure().equals("hts")) {
-			entityHTSDAO.insert_key(xgroup.getEntity_table(), xgroup.getColumn_key(), key_val);
-			//
+		String seq = omniformDAO.getMinID();
+		if(seq != null) {
+			String payload = omniformDAO.getPayload(seq);
+			String type = new XCheckType().exec(payload).getType();
+			String key_val = new XCheckType().exec(payload).getBusinessID();
 			
-			//
-			for(XpathList xpathSrc : xpathList) {
-				System.out.println("extracting: "+xpathSrc.getColumn());
-				String value = new XExtract().execute(payload, xpathSrc.getPath());
-				entityHTSDAO.insert(xgroup.getEntity_table(), xgroup.getColumn_key(), key_val, xpathSrc.getColumn(), value);
+			List<XpathConfig> xgroup = checkGroupDAO.checkGroup(type);
+			for(XpathConfig xpathConfig : xgroup) {
+				List<XpathList> xpathList = xpathListDAO.xpathList(xpathConfig.getXgroup());
+				if(xpathConfig.getTb_structure().equals("hts")) {
+					entityHTSDAO.insert_key(xpathConfig.getEntity_table(), xpathConfig.getColumn_key(), key_val);
+					//
+					
+					//
+					for(XpathList xpathSrc : xpathList) {
+						System.out.println("extracting: "+xpathSrc.getColumn());
+						String value = new XExtract().execute(payload, xpathSrc.getPath());
+						entityHTSDAO.insert(xpathConfig.getEntity_table(), xpathConfig.getColumn_key(), key_val, xpathSrc.getColumn(), value);
+					}
+				}
 			}
+			omniformDAO.updateStage(seq);
+
+			System.out.println("Extraction for entity id:"+key_val+" already finished!");
+		}else {
+			System.out.println("New omniform not found");
 		}
-		
-		//
-		//new XExtract().execute(xgroup.getEntity_table(), xgroup.getColumn_key(), key_val, payload, xgroup.getTb_structure(), xpathList);
 		
 		
 	}

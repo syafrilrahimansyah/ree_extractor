@@ -37,4 +37,10 @@ public class OmniformDAOimpl implements OmniformDAO{
 		}
 	}
 
+	@Override
+	public void updateStage(String id) {
+		String sql = "UPDATE omniform SET stage = 'ext' WHERE seq = '"+id+"'";
+		jdbcTemplate.update(sql);
+	}
+
 }
