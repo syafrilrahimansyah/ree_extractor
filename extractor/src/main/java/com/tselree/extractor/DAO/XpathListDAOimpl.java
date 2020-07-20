@@ -22,7 +22,7 @@ public class XpathListDAOimpl implements XpathListDAO {
 	@Override
 	public List<XpathList> xpathList(String xgroup) {
 		// TODO Auto-generated method stub
-		String sql = "SELECT `column`, `path` FROM list_xpath WHERE xgroup = '"+xgroup+"'";
+		String sql = "SELECT `column`, `path`, `multiplevalue` FROM list_xpath WHERE xgroup = '"+xgroup+"'";
 		
 		List<XpathList> listXpath = jdbcTemplate.query(sql, new RowMapper<XpathList>() {
 
@@ -32,6 +32,7 @@ public class XpathListDAOimpl implements XpathListDAO {
 				XpathList xpath = new XpathList();
 				xpath.setColumn(rs.getString("column"));
 				xpath.setPath(rs.getString("path"));
+				xpath.setMultiplevalue(rs.getBoolean("multiplevalue"));
 				return xpath;
 			}
 		});

@@ -9,6 +9,7 @@ import org.springframework.stereotype.Component;
 
 import com.tselree.extractor.DAO.CheckGroupDAO;
 import com.tselree.extractor.DAO.EntityHTSDAO;
+import com.tselree.extractor.DAO.EntityVTSDAO;
 import com.tselree.extractor.DAO.OmniformDAO;
 import com.tselree.extractor.DAO.XpathListDAO;
 import com.tselree.extractor.model.XpathConfig;
@@ -23,6 +24,9 @@ public class ExtractTasks {
 	private XpathListDAO xpathListDAO;
 	@Autowired
 	private EntityHTSDAO entityHTSDAO;
+	@Autowired
+	private EntityVTSDAO entityVTSDAO;
+	
 	@Scheduled(fixedRate = 5000)
 	public void execute() throws Exception {
 		String seq = omniformDAO.getMinID();
@@ -36,13 +40,18 @@ public class ExtractTasks {
 				List<XpathList> xpathList = xpathListDAO.xpathList(xpathConfig.getXgroup());
 				if(xpathConfig.getTb_structure().equals("hts")) {
 					entityHTSDAO.insert_key(xpathConfig.getEntity_table(), xpathConfig.getColumn_key(), key_val);
-					//
 					
-					//
 					for(XpathList xpathSrc : xpathList) {
 						System.out.println("extracting: "+xpathSrc.getColumn());
-						String value = new XExtract().execute(payload, xpathSrc.getPath());
+						String value = new XExtract().execute(payload, xpathSrc.getPath(), xpathSrc.getMultiplevalue());
 						entityHTSDAO.insert(xpathConfig.getEntity_table(), xpathConfig.getColumn_key(), key_val, xpathSrc.getColumn(), value);
+					}
+				}else {
+					entityVTSDAO.del_existing(xpathConfig.getEntity_table(), key_val);
+					for(XpathList xpathSrc : xpathList) {
+						System.out.println("extracting: "+xpathSrc.getColumn());
+						String value = new XExtract().execute(payload, xpathSrc.getPath(), xpathSrc.getMultiplevalue());
+						entityVTSDAO.insert(xpathConfig.getEntity_table(), key_val, xpathSrc.getColumn(), value);
 					}
 				}
 			}
