@@ -32,11 +32,12 @@ public class ExtractTasks {
 		String seq = omniformDAO.getMinID();
 		if(seq != null) {
 			String payload = omniformDAO.getPayload(seq);
-			String type = new XCheckType().exec(payload).getType();
-			String key_val = new XCheckType().exec(payload).getBusinessID();
+			String type = new XCheck().exec(payload).getType();
+			String entity_id = new XCheck().exec(payload).getEntityID();
 			
 			List<XpathConfig> xgroup = checkGroupDAO.checkGroup(type);
 			for(XpathConfig xpathConfig : xgroup) {
+				String key_val = new XKeyVal().exec(payload, xpathConfig.getKey_path());
 				List<XpathList> xpathList = xpathListDAO.xpathList(xpathConfig.getXgroup());
 				if(xpathConfig.getTb_structure().equals("hts")) {
 					entityHTSDAO.insert_key(xpathConfig.getEntity_table(), xpathConfig.getColumn_key(), key_val);
@@ -57,7 +58,7 @@ public class ExtractTasks {
 			}
 			omniformDAO.updateStage(seq);
 
-			System.out.println("Extraction for entity id:"+key_val+" already finished!");
+			System.out.println("Extraction for entity id:"+entity_id+" already finished!");
 		}else {
 			System.out.println("New omniform not found");
 		}

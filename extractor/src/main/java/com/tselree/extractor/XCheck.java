@@ -12,7 +12,7 @@ import org.xml.sax.InputSource;
 
 import com.tselree.extractor.model.Check;
 
-public class XCheckType {
+public class XCheck {
 	public Check exec(String xml) throws Exception{
 		xml = xml.replaceAll("[^\\x20-\\x7e\\x0A]", "");
 		InputSource source = new InputSource(new StringReader(xml));
@@ -25,7 +25,7 @@ public class XCheckType {
 		XPath xpath = xpathFactory.newXPath();
 		
 		Check check = new Check();
-		check.setBusinessID(xpath.evaluate("/Root/Package/@BusinessID", document));
+		check.setEntityID(xpath.evaluate("/Root/Package/@BusinessID", document));
 		check.setType(xpath.evaluate("/Root/Package/@type", document));
 		return check;
 	}

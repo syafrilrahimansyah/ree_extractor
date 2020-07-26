@@ -13,14 +13,14 @@ public class EntityVTSDAOimpl implements EntityVTSDAO{
 
 	@Override
 	public void insert(String table, String key_val, String column, String value) {
-		String sql = "INSERT INTO "+table+"(entity_id, name, value) VALUES('"+key_val+"','"+column+"','"+value+"')";
+		String sql = "INSERT INTO "+table+"(key_id, name, value) VALUES('"+key_val+"','"+column+"','"+value+"')";
 		jdbcTemplate.update(sql);
 		
 	}
 
 	@Override
 	public void del_existing(String table, String key_val) {
-		String sql = "DELETE FROM "+table+" WHERE entity_id = '"+key_val+"'";
+		String sql = "DELETE FROM "+table+" WHERE key_id = '"+key_val+"'";
 		jdbcTemplate.update(sql);
 	}
 

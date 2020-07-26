@@ -34,6 +34,7 @@ public class CheckGroupDAOimpl implements CheckGroupDAO{
 				xpathConfig.setEntity_table(rs.getString("entity_table"));
 				xpathConfig.setTb_structure(rs.getString("tb_structure"));
 				xpathConfig.setXgroup(rs.getString("xgroup"));
+				xpathConfig.setKey_path(rs.getString("key_path"));
 				return xpathConfig;
 			}});
 		return xpathConfig;

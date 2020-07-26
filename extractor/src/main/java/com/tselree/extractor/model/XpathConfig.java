@@ -5,16 +5,18 @@ public class XpathConfig {
 	private String entity_table;
 	private String column_key;
 	private String tb_structure;
+	private String key_path;
 	
 	public XpathConfig() {
 	}
 
-	public XpathConfig(String xgroup, String entity_table, String column_key, String tb_structure) {
+	public XpathConfig(String xgroup, String entity_table, String column_key, String tb_structure, String key_path) {
 		super();
 		this.xgroup = xgroup;
 		this.entity_table = entity_table;
 		this.column_key = column_key;
 		this.tb_structure = tb_structure;
+		this.key_path = key_path;
 	}
 
 	public String getXgroup() {
@@ -47,6 +49,14 @@ public class XpathConfig {
 
 	public void setTb_structure(String tb_structure) {
 		this.tb_structure = tb_structure;
+	}
+
+	public String getKey_path() {
+		return key_path;
+	}
+
+	public void setKey_path(String key_path) {
+		this.key_path = key_path;
 	}
 	
 	
