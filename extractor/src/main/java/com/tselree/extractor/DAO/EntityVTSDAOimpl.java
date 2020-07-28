@@ -13,9 +13,8 @@ public class EntityVTSDAOimpl implements EntityVTSDAO{
 
 	@Override
 	public void insert(String table, String key_val, String column, String value) {
-		String sql = "INSERT INTO "+table+"(key_id, name, value) VALUES('"+key_val+"','"+column+"','"+value+"')";
+		String sql = "INSERT INTO "+table+"(KEY_ID, NAME, VALUE) VALUES('"+key_val+"','"+column+"','"+value+"')";
 		jdbcTemplate.update(sql);
-		
 	}
 
 	@Override

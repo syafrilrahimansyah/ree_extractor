@@ -1,8 +1,6 @@
 package com.tselree.extractor;
 
 import java.io.StringReader;
-import java.util.ArrayList;
-import java.util.List;
 
 import javax.xml.parsers.*;
 import javax.xml.xpath.*;
