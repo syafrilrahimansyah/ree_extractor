@@ -15,12 +15,9 @@ import org.xml.sax.InputSource;
 
 public class XLoop {
 	public Integer exec(String xml, String loop_path) throws Exception{
-		xml = xml.replaceAll("[^\\x20-\\x7e\\x0A]", "");
-		InputSource source = new InputSource(new StringReader(xml));
-
-		DocumentBuilderFactory dbf = DocumentBuilderFactory.newInstance();
-		DocumentBuilder db = dbf.newDocumentBuilder();
-		Document document = db.parse(source);
+		DocumentBuilderFactory factory = DocumentBuilderFactory.newInstance();
+        DocumentBuilder builder = factory.newDocumentBuilder();
+        Document document = builder.parse(xml);
 
 		XPathFactory xpathFactory = XPathFactory.newInstance();
 		XPath xpath = xpathFactory.newXPath();

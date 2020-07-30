@@ -19,12 +19,9 @@ import com.tselree.extractor.model.XpathList;
 public class XExtractVTS {
 public Map<String,String> execute(String payload, List<XpathList> xpathList) throws Exception{
 		
-		payload = payload.replaceAll("[^\\x20-\\x7e\\x0A]", "");
-		InputSource source = new InputSource(new StringReader(payload));
-
-		DocumentBuilderFactory dbf = DocumentBuilderFactory.newInstance();
-		DocumentBuilder db = dbf.newDocumentBuilder();
-		Document document = db.parse(source);
+		DocumentBuilderFactory factory = DocumentBuilderFactory.newInstance();
+	    DocumentBuilder builder = factory.newDocumentBuilder();
+	    Document document = builder.parse(payload);
 
 		XPathFactory xpathFactory = XPathFactory.newInstance();
 		XPath xpath = xpathFactory.newXPath();

@@ -12,12 +12,9 @@ import com.tselree.extractor.model.Check;
 
 public class XCheck {
 	public Check exec(String xml) throws Exception{
-		xml = xml.replaceAll("[^\\x20-\\x7e\\x0A]", "");
-		InputSource source = new InputSource(new StringReader(xml));
-
-		DocumentBuilderFactory dbf = DocumentBuilderFactory.newInstance();
-		DocumentBuilder db = dbf.newDocumentBuilder();
-		Document document = db.parse(source);
+		DocumentBuilderFactory factory = DocumentBuilderFactory.newInstance();
+        DocumentBuilder builder = factory.newDocumentBuilder();
+        Document document = builder.parse(xml);
 
 		XPathFactory xpathFactory = XPathFactory.newInstance();
 		XPath xpath = xpathFactory.newXPath();
